@@ -2,14 +2,15 @@
 #define ROOK_HPP
 
 #include "Piece.hpp"
+#include "StraightLineMovement.hpp"
 #include "../Utils/Constants.hpp"
 #include <memory>
 
 /**
  * Classe représentant une tour
- * Hérite de Piece et implémente les règles spécifiques de la tour
+ * Hérite de Piece et implémente StraightLineMovement
  */
-class Rook : public Piece {
+class Rook : public Piece, public StraightLineMovement {
 public:
     /**
      * Constructeur
@@ -21,15 +22,7 @@ public:
      * Implémente les règles de mouvement de la tour
      */
     bool canMoveTo(const Position& target) const override {
-        if (position_ == target) {
-            return false;
-        }
-        
-        int deltaX = target.getX() - position_.getX();
-        int deltaY = target.getY() - position_.getY();
-        
-        // La tour se déplace uniquement horizontalement ou verticalement
-        return (deltaX == 0 && deltaY != 0) || (deltaX != 0 && deltaY == 0);
+        return canMoveStraight(position_, target);
     }
     
     /**

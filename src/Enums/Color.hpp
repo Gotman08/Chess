@@ -1,12 +1,9 @@
 #ifndef COLOR_HPP
 #define COLOR_HPP
 
-/**
- * Enumération représentant les couleurs des pièces d'échecs
- */
 enum class Color {
     WHITE,
-    BLACK
+    BLACK,
 };
 
 #endif // COLOR_HPP

@@ -5,20 +5,24 @@
 #include "../Utils/Constants.hpp"
 #include <memory>
 
-/**
- * Classe représentant un cavalier
- * Hérite de Piece et implémente les règles spécifiques du cavalier
- */
+
 class Knight : public Piece {
-public:
-    /**
-     * Constructeur
-     */
+    public:
+
     Knight(const Position& position, Color color) 
         : Piece(position, color, PieceType::KNIGHT) {}
     
+
     /**
-     * Implémente les règles de mouvement du cavalier
+     * @brief Determines if the knight can move to the specified target position.
+     * 
+     * A knight moves in an L-shape: either 2 squares horizontally and 1 square vertically,
+     * or 1 square horizontally and 2 squares vertically. This method validates that the
+     * target position follows this movement pattern.
+     * 
+     * @param target The target position to move to
+     * @return true if the knight can legally move to the target position, false otherwise
+     * @note Returns false if the target position is the same as the current position
      */
     bool canMoveTo(const Position& target) const override {
         if (position_ == target) {
@@ -28,19 +32,29 @@ public:
         int deltaX = abs(target.getX() - position_.getX());
         int deltaY = abs(target.getY() - position_.getY());
         
-        // Le cavalier se déplace en L : 2 cases dans une direction, 1 dans l'autre
         return (deltaX == 2 && deltaY == 1) || (deltaX == 1 && deltaY == 2);
     }
     
+
     /**
-     * Retourne la valeur du cavalier
+     * @brief Gets the material value of the knight piece.
+     * 
+     * @return The standard chess point value for a knight piece as defined in ChessConstants.
      */
     int getValue() const override {
         return ChessConstants::PieceValues::KNIGHT;
     }
     
     /**
-     * Clone le cavalier
+     * @brief Creates a deep copy of the Knight piece.
+     * 
+     * This method implements the clone pattern to create an exact copy of the current
+     * Knight instance, preserving its position and color properties.
+     * 
+     * @return std::unique_ptr<Piece> A unique pointer to a new Knight object that is
+     *         an exact copy of this instance.
+     * 
+     * @note This method overrides the pure virtual clone method from the base Piece class.
      */
     std::unique_ptr<Piece> clone() const override {
         return std::make_unique<Knight>(position_, color_);

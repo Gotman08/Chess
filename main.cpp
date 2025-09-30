@@ -47,7 +47,15 @@ int main() {
             std::cout << "Au tour des " << (currentPlayer->isWhite() ? "Blancs" : "Noirs") << std::endl;
             std::cout << "Votre mouvement: ";
             
-            std::getline(std::cin, input);
+            // Vérifier si l'entrée est valide et gérer Ctrl+D (EOF)
+            if (!std::getline(std::cin, input)) {
+                if (std::cin.eof()) {
+                    std::cout << "\nCtrl+D détecté. Au revoir!" << std::endl;
+                } else {
+                    std::cout << "\nErreur de lecture. Au revoir!" << std::endl;
+                }
+                break;
+            }
             
             if (input == "quit" || input == "q") {
                 std::cout << "Merci d'avoir joué!" << std::endl;

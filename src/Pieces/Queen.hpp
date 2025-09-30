@@ -2,40 +2,28 @@
 #define QUEEN_HPP
 
 #include "Piece.hpp"
+#include "DiagonalMovement.hpp"
+#include "StraightLineMovement.hpp"
 #include "../Utils/Constants.hpp"
 #include <memory>
 
 /**
  * Classe représentant une dame
- * Hérite de Piece et implémente les règles spécifiques de la dame
+ * Hérite de Piece et combine DiagonalMovement et StraightLineMovement
  */
-class Queen : public Piece {
+class Queen : public Piece, public DiagonalMovement, public StraightLineMovement {
 public:
-    /**
-     * Constructeur
-     */
+
     Queen(const Position& position, Color color) 
         : Piece(position, color, PieceType::QUEEN) {}
     
+
     /**
      * Implémente les règles de mouvement de la dame
+     * Combine les mouvements diagonal (fou) et en ligne droite (tour)
      */
     bool canMoveTo(const Position& target) const override {
-        if (position_ == target) {
-            return false;
-        }
-        
-        int deltaX = abs(target.getX() - position_.getX());
-        int deltaY = abs(target.getY() - position_.getY());
-        
-        // La dame combine les mouvements de la tour et du fou
-        // Mouvement horizontal/vertical (comme la tour)
-        bool isRookMove = (deltaX == 0 && deltaY > 0) || (deltaX > 0 && deltaY == 0);
-        
-        // Mouvement diagonal (comme le fou)
-        bool isBishopMove = (deltaX == deltaY && deltaX > 0);
-        
-        return isRookMove || isBishopMove;
+        return canMoveDiagonally(position_, target) || canMoveStraight(position_, target);
     }
     
     /**
